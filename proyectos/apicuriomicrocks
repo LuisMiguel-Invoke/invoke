@@ -3,44 +3,76 @@ openapi: 3.0.2
 info:
   title: apicurio-microcks
   description: proyecto prueba de integración apicurio a microcks
+  license:
+    name: GNU AGPLv3
+    url: https://www.gnu.org/licenses/agpl.txt
   version: 1.0.0
 paths:
   /directory:
+    summary: Directorio de Contactos
     get:
-      summary: List Contacts
+      summary: Lista de Contactos
       description: Genera lista de contactos de un directorio
       responses:
         200:
+          description: Lista Contactos
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Contact'
+              examples:
+                Lista Contactos:
+                  value: |
+                    [{
+                        "Number" : "962123456",
+                        "Name" : "Luis Oliveros",
+                        "Email" : "contacto.luisoliveros@gmail.com"
+                    },
+                    {
+                        "Number" : "999123456",
+                        "Name" : "Carlos Sanchez",
+                        "Email" : ""
+                    }]
     post:
-      summary: Create Directory
-      description: Crear un Directorio de contactos
+      summary: Create Contacto
+      description: Crear un contacto
       requestBody:
         content:
           application/json:
             schema:
-              type: string
+              $ref: '#/components/schemas/Contact'
             examples:
-              Nombre del Directorio:
-                value: '"Directory Example"'
+              Contacto new:
+                value: |-
+                  {
+                      "Number": "999123456",
+                      "Name": "Carlos Sanchez",
+                      "Email": "kaya2@gmail.com"
+                  }
         required: true
       responses:
         201:
-          description: Directorio Creado
-  /directory/{contactId}:
+          description: Contacto Creado
+  /directory/{number}:
     get:
       summary: Get an Contact
       responses:
         200:
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Contact'
+              examples:
+                Contacto:
+                  value: |-
+                    {
+                        "Number" : "962123456",
+                        "Name" : "Luis Oliveros",
+                        "Email" : "contacto.luisoliveros@gmail.com"
+                    }
     put:
       summary: Update an Contact
       requestBody:
@@ -48,21 +80,31 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Contact'
+            examples:
+              Contacto Ejemplo:
+                value: |-
+                  {
+                      "Number" : "999123456",
+                      "Name" : "Carlos Sanchez",
+                      "Email" : "kaya@gmail.com"
+                  }
         required: true
       responses:
-        204: {}
+        204:
+          description: No Content
     delete:
       summary: Delete an Contact
       responses:
         204:
+          description: No Content
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Contact'
     parameters:
-    - name: contactId
+    - name: number
       in: path
-      description: Contact ID
+      description: Number que representa el ID
       required: true
       schema:
         type: string
@@ -78,17 +120,16 @@ components:
       properties:
         id:
           description: Identificador del Contacto
-          enum:
-          - 1..n
+          type: string
         Name:
           description: Nombre del contacto
           type: string
         Email:
           description: Email del contacto
           type: string
-      example: |
+      example: |-
         {
-            "id" : "1",
+            "Number" : "962123456",
             "Name" : "Luis Oliveros",
             "Email" : "contacto.luisoliveros@gmail.com"
         }
