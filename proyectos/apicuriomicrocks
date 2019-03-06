@@ -1,0 +1,94 @@
+---
+openapi: 3.0.2
+info:
+  title: apicurio-microcks
+  description: proyecto prueba de integración apicurio a microcks
+  version: 1.0.0
+paths:
+  /directory:
+    get:
+      summary: List Contacts
+      description: Genera lista de contactos de un directorio
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+    post:
+      summary: Create Directory
+      description: Crear un Directorio de contactos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+            examples:
+              Nombre del Directorio:
+                value: '"Directory Example"'
+        required: true
+      responses:
+        201:
+          description: Directorio Creado
+  /directory/{contactId}:
+    get:
+      summary: Get an Contact
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+    put:
+      summary: Update an Contact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contact'
+        required: true
+      responses:
+        204: {}
+    delete:
+      summary: Delete an Contact
+      responses:
+        204:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+    parameters:
+    - name: contactId
+      in: path
+      description: Contact ID
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    Contact:
+      title: Root Type for Contact
+      description: Atributos de un Contacto
+      required:
+      - id
+      - Name
+      type: object
+      properties:
+        id:
+          description: Identificador del Contacto
+          enum:
+          - 1..n
+        Name:
+          description: Nombre del contacto
+          type: string
+        Email:
+          description: Email del contacto
+          type: string
+      example: |
+        {
+            "id" : "1",
+            "Name" : "Luis Oliveros",
+            "Email" : "contacto.luisoliveros@gmail.com"
+        }
